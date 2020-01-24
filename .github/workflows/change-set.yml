@@ -18,6 +18,6 @@ jobs:
       run: |
         aws cloudformation create-change-set \
           --stack-name  ishocon2-resources \
-          --change-set-name ${{ github.event.pull_request.title }} \
+          --change-set-name "${{ github.event.pull_request.title }}" \
           --template-body file://`pwd`/template.yml \
           --parameters file://`pwd`/parameters/production.json
