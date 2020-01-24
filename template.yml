@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: infrastructure for ISHOCON2
+Parameters:
+  ServiceName:
+    Type: String
+    Default: ishocon2
+  CidrIpOffice:
+    Type: String
+    Default: '{{resolve:ssm:/ISHOCON2/Dev/Network/office-ip:1}}'
+  VpcIdMain:
+    Type: String
+    Default: '{{resolve:ssm:/ISHOCON2/Dev/Network/vpc-id:1}}'
+  SubnetIdMain:
+    Type: String
+    Default: '{{resolve:ssm:/ISHOCON2/Dev/Network/subnet-id:1}}'
+  KeyNameMain:
+    Type: String
+    Default: '{{resolve:ssm:/ISHOCON2/Dev/Security/key-name:1}}'
+Resources:
+  Ec2SecurityGroupBenchmarker:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ServiceName}_bench
+      GroupDescription: benchmark server security group
+      VpcId: !Ref VpcIdMain
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref CidrIpOffice
+      Tags:
+        - Key: Name
+          Value: !Sub ${ServiceName}_bench
+  Ec2SecurityGroupApp:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ServiceName}_app
+      GroupDescription: app server security group
+      VpcId: !Ref VpcIdMain
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref CidrIpOffice
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref Ec2SecurityGroupBenchmarker
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref CidrIpOffice
+      Tags:
+        - Key: Name
+          Value: !Sub ${ServiceName}_app
+  Ec2InstanceBenchmarker:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref SubnetIdMain
+      ImageId: ami-78b66107
+      InstanceType: c4.large
+      KeyName: !Ref KeyNameMain
+      SecurityGroupIds:
+        - !Ref Ec2SecurityGroupBenchmarker
+      Tags:
+        - Key: Name
+          Value: !Sub ${ServiceName}_bench
+  EC2EIPBenchmarker:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  EC2EIPAssociationBenchmarker:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      EIP: !Ref EC2EIPBenchmarker
+      InstanceId: !Ref Ec2InstanceBenchmarker
+  Ec2InstanceApp:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref SubnetIdMain
+      ImageId: ami-0ec5ab0a6192bf279
+      InstanceType: c4.large
+      KeyName: yisucon
+      SecurityGroupIds:
+        - !Ref Ec2SecurityGroupApp
+      Tags:
+        - Key: Name
+          Value: !Sub ${ServiceName}_app
+  EC2EIPApp:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  EC2EIPAssociationApp:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      EIP: !Ref EC2EIPApp
+      InstanceId: !Ref Ec2InstanceApp
+# Outputs:

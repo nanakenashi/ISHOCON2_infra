@@ -1,0 +1,18 @@
+[
+  {
+    "ParameterKey": "CidrIpOffice",
+    "ParameterValue": "{{resolve:ssm:/ISHOCON2/Prod/Network/office-ip:1}}"
+  },
+  {
+    "ParameterKey": "VpcIdMain",
+    "ParameterValue": "{{resolve:ssm:/ISHOCON2/Prod/Network/vpc-id:1}}"
+  },
+  {
+    "ParameterKey": "SubnetIdMain",
+    "ParameterValue": "{{resolve:ssm:/ISHOCON2/Prod/Network/subnet-id:1}}"
+  },
+  {
+    "ParameterKey": "KeyNameMain",
+    "ParameterValue": "{{resolve:ssm:/ISHOCON2/Prod/Security/key-name:1}}"
+  }
+]
