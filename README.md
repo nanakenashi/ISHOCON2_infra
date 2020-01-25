@@ -9,6 +9,7 @@ aws cloudformation validate-template\
 
 aws cloudformation create-stack \
   --stack-name ishocon2-resources \
+  --role-arn {{role-arn}} \
   --template-body file://`pwd`/template.yml \
   --parameters file://`pwd`/parameters/production.json
 
