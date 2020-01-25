@@ -66,11 +66,11 @@ Resources:
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
-  # EC2EIPAssociationBenchmarker:
-  #   Type: AWS::EC2::EIPAssociation
-  #   Properties:
-  #     EIP: !Ref EC2EIPBenchmarker
-  #     InstanceId: !Ref Ec2InstanceBenchmarker
+  EC2EIPAssociationBenchmarker:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      EIP: !Ref EC2EIPBenchmarker
+      InstanceId: !Ref Ec2InstanceBenchmarker
   Ec2InstanceApp:
     Type: AWS::EC2::Instance
     Properties:
