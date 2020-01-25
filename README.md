@@ -8,38 +8,38 @@ aws cloudformation validate-template\
   --template-body file://`pwd`/template.yml
 
 aws cloudformation create-stack \
-  --stack-name ishocon2-resources \
+  --stack-name ishocon2 \
   --template-body file://`pwd`/template.yml \
   --parameters file://`pwd`/parameters/production.json
 
 aws cloudformation create-change-set \
-  --stack-name  ishocon2-resources \
+  --stack-name  ishocon2 \
   --change-set-name remove-benchmarker-eip \
   --template-body file://`pwd`/template.yml \
   --parameters file://`pwd`/parameters/production.json
 
 aws cloudformation list-change-sets \
-  --stack-name ishocon2-resources
+  --stack-name ishocon2
 
 aws cloudformation describe-change-set \
-  --stack-name ishocon2-resources \
+  --stack-name ishocon2 \
   --change-set-name remove-benchmarker-eip
 
 aws cloudformation execute-change-set \
-  --stack-name ishocon2-resources \
+  --stack-name ishocon2 \
   --change-set-name remove-benchmarker-eip
 
 aws cloudformation delete-change-set \
-  --stack-name ishocon2-resources \
+  --stack-name ishocon2 \
   --change-set-name remove-benchmarker-eip
 
 aws cloudformation update-stack \
-  --stack-name ishocon2-resources \
+  --stack-name ishocon2 \
   --template-body file://`pwd`/template.yml \
   --parameters file://`pwd`/parameters/production.json
 
 aws cloudformation delete-stack \
-  --stack-name ishocon2-resources
+  --stack-name ishocon2
 ```
 
 # References
