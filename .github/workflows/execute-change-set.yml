@@ -1,8 +1,9 @@
 name: Execute Change Set
 
 on:
-  push:
+  pull_request:
     branches: master
+    types: [closed]
 
 jobs:
   execute:
