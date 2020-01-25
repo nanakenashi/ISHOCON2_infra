@@ -77,7 +77,7 @@ Resources:
       SubnetId: !Ref SubnetIdMain
       ImageId: ami-0ec5ab0a6192bf279
       InstanceType: c4.large
-      KeyName: yisucon
+      KeyName: !Ref KeyNameMain
       SecurityGroupIds:
         - !Ref Ec2SecurityGroupApp
       Tags:
